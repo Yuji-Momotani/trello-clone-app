@@ -1,0 +1,13 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Front
+./trello-clone/node_modules
+./trello-clone/node_modules/.cache
+*/node_modules
+*/node_modules/.cache
+
+# Backend
+./trello-clone-api/tmp
+
+# common
+*/.vscode

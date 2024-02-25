@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  trello-app:
+    build: ./trello-clone
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./trello-clone:/app
+  db:
+    container_name: trello-clone-postgres
+    image: postgres:15.1-alpine
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: db-dev-user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dev-db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart: always
+  api:
+    container_name: trello-clone-api
+    build: ./trello-clone-api
+    ports:
+      - "8080:8080"
+      - "2345:2345" #delv（デバッグ）用のポート
+    environment:
+      GO_ENV: dev
+      PORT: 8080
+      POSTGRES_USER: db-dev-user
+      POSTGRES_PW: password
+      POSTGRES_DB: dev-db
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: db # Dockerで起動時
+      #POSTGRES_HOST=localhost # ホストで起動時
+      SECRET: devsecret
+      API_DOMAIN: localhost
+      FE_URL: http://slack-app:3000
+      FE_URL2: http://slack-app:9229
+    volumes:
+      - ./trello-clone-api:/app
+
+volumes:
+  db-data:
+    driver: local
