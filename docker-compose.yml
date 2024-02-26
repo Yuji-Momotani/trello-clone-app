@@ -7,8 +7,8 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
-    volumes:
-      - ./trello-clone:/app
+    # volumes:
+    #   - ./trello-clone:/app
   db:
     container_name: trello-clone-postgres
     image: postgres:15.1-alpine
